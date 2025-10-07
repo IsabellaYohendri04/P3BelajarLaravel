@@ -39,7 +39,7 @@
                     @endforeach
                 </ul>
             </li>
-            <li class="list-group-item"><b>Tanggal Harus Wisuda:</b> {{ $tgl_harus_wisuda }}</li>
+            <li class="list-group-item"><b>Tanggal Harus Wisudaa:</b> {{ $tgl_harus_wisuda }}</li>
             <li class="list-group-item"><b>Waktu Menuju Wisuda:</b> {{ $time_to_study_left }} hari lagi</li>
             <li class="list-group-item"><b>Semester Saat Ini:</b> {{ $current_semester }}</li>
             <li class="list-group-item"><b>Informasi:</b> <em>{{ $info }}</em></li>
