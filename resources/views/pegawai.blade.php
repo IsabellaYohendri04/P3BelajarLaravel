@@ -30,20 +30,20 @@
     <div class="card p-4">
         <h1 class="text-center mb-4">📋 Data Pegawai</h1>
         <ul class="list-group list-group-flush">
-            <li class="list-group-item"><b>Nama:</b> {{ $nama }}</li>
-            <li class="list-group-item"><b>Umur:</b> {{ $umur }} tahun</li>
+            <li class="list-group-item"><b>Nama:</b> {{ $name }}</li>
+            <li class="list-group-item"><b>Umur:</b> {{ $my_age }} tahun</li>
             <li class="list-group-item"><b>Hobi:</b>
                 <ul>
-                    @foreach($hobi as $item)
+                    @foreach($hobbies as $item)
                         <li>{{ $item }}</li>
                     @endforeach
                 </ul>
             </li>
-            <li class="list-group-item"><b>Tanggal Wisuda:</b> {{ $tanggal_wisuda }}</li>
-            <li class="list-group-item"><b>Hari Menuju Wisuda:</b> {{ $hari_menuju_wisuda }} hari lagi</li>
-            <li class="list-group-item"><b>Semester Sekarang:</b> {{ $semester_sekarang }}</li>
-            <li class="list-group-item"><b>Pesan:</b> <em>{{ $pesan }}</em></li>
-            <li class="list-group-item"><b>Cita-cita:</b> {{ $cita_cita }}</li>
+            <li class="list-group-item"><b>Tanggal Harus Wisuda:</b> {{ $tgl_harus_wisuda }}</li>
+            <li class="list-group-item"><b>Waktu Menuju Wisuda:</b> {{ $time_to_study_left }} hari lagi</li>
+            <li class="list-group-item"><b>Semester Saat Ini:</b> {{ $current_semester }}</li>
+            <li class="list-group-item"><b>Informasi:</b> <em>{{ $info }}</em></li>
+            <li class="list-group-item"><b>Cita-cita:</b> {{ $future_goal }}</li>
         </ul>
     </div>
 </div>

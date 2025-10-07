@@ -8,77 +8,35 @@ class PegawaiController extends Controller
 {
     public function index()
     {
-        $nama = "Isabella Yohendri";
-        $tanggal_lahir = new \DateTime('2006-04-18');
-        $tanggal_wisuda = new \DateTime('2027-07-20');
-        $tanggal_sekarang = new \DateTime();
+        $name = "Isabella Yohendri";
+        $birth_date = new \DateTime('2006-04-18');
+        $tgl_harus_wisuda = new \DateTime('2027-07-20');
+        $today = new \DateTime();
 
-        $umur = $tanggal_sekarang->diff($tanggal_lahir)->y;
+        $my_age = $today->diff($birth_date)->y;
 
-        $hobi = ["Mandi", "Makan", "Main Gitar", "Nyanyi", "Gaming"];
+        $hobbies = ["Mandi", "Makan", "Main Gitar", "Nyanyi", "Gaming"];
 
-        $selisih_hari = $tanggal_sekarang->diff($tanggal_wisuda);
-        $hari_menuju_wisuda = $selisih_hari->invert ? -$selisih_hari->days : $selisih_hari->days;
+        $selisih_hari = $today->diff($tgl_harus_wisuda);
+        $time_to_study_left = $selisih_hari->invert ? -$selisih_hari->days : $selisih_hari->days;
 
-        $semester_sekarang = 3;
+        $current_semester = 3;
 
-        $pesan = $semester_sekarang < 3
-            ? "Yang Penting Jangan lupa minum "
-            : "Sama jangan lupa makan";
+        $info = $current_semester < 3
+            ? "Masih Awal, Kejar TAK!"
+            : "Jangan main-main, kurang-kurangi main game!";
 
-        $cita_cita = "Menjadi Engineer";
-
-        return view('pegawai', [
-            'nama' => $nama,
-            'umur' => $umur,
-            'hobi' => $hobi,
-            'tanggal_wisuda' => $tanggal_wisuda->format('Y-m-d'),
-            'hari_menuju_wisuda' => $hari_menuju_wisuda,
-            'semester_sekarang' => $semester_sekarang,
-            'pesan' => $pesan,
-            'cita_cita' => $cita_cita
-        ]);
-    }
-}
-<?php
-
-namespace App\Http\Controllers;
-
-use Illuminate\Http\Request;
-
-class PegawaiController extends Controller
-{
-    public function index()
-    {
-        $nama = "Isabella Yohendri";
-        $tanggal_lahir = new \DateTime('2006-04-18');
-        $tanggal_wisuda = new \DateTime('2027-07-20');
-        $tanggal_sekarang = new \DateTime();
-
-        $umur = $tanggal_sekarang->diff($tanggal_lahir)->y;
-
-        $hobi = ["Mandi", "Makan", "Main Gitar", "Nyanyi", "Gaming"];
-
-        $selisih_hari = $tanggal_sekarang->diff($tanggal_wisuda);
-        $hari_menuju_wisuda = $selisih_hari->invert ? -$selisih_hari->days : $selisih_hari->days;
-
-        $semester_sekarang = 3;
-
-        $pesan = $semester_sekarang < 3
-            ? "Yang Penting Jangan lupa minum "
-            : "Sama jangan lupa makan";
-
-        $cita_cita = "Menjadi Engineer";
+        $future_goal = "Menjadi Engineer";
 
         return view('pegawai', [
-            'nama' => $nama,
-            'umur' => $umur,
-            'hobi' => $hobi,
-            'tanggal_wisuda' => $tanggal_wisuda->format('Y-m-d'),
-            'hari_menuju_wisuda' => $hari_menuju_wisuda,
-            'semester_sekarang' => $semester_sekarang,
-            'pesan' => $pesan,
-            'cita_cita' => $cita_cita
+            'name' => $name,
+            'my_age' => $my_age,
+            'hobbies' => $hobbies,
+            'tgl_harus_wisuda' => $tgl_harus_wisuda->format('Y-m-d'),
+            'time_to_study_left' => $time_to_study_left,
+            'current_semester' => $current_semester,
+            'info' => $info,
+            'future_goal' => $future_goal
         ]);
     }
 }
