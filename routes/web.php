@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\QuestionController;
 
@@ -49,7 +50,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/auth', [AuthController::class, 'index'])->name('auth.index');
 Route::post('/auth/login', [AuthController::class, 'login'])->name('auth.login');
 
-// Contoh route dashboard setelah login berhasil
-Route::get('/dashboard', function () {
-    return 'Selamat datang di dashboard!';
-})->name('dashboard'); // untuk memberikan nama yang bakal dipanggil di controller
+// // Contoh route dashboard setelah login berhasil
+// Route::get('/dashboard', function () {
+//     return 'Selamat datang di dashboard!';
+// })->name('dashboard'); // untuk memberikan nama yang bakal dipanggil di controller
+
+route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
