@@ -1,0 +1,13 @@
+#logo {
+    height: 40px;
+    width: 40px;
+}
+
+@font-face {
+    font-family: 'MyCustomFont';
+    src: url('assets/fonts/MyCustomFont.ttf');
+}
+
+.font-custom {
+    font-family: 'MyCustomFont';
+}

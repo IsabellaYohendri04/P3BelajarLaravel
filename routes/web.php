@@ -52,4 +52,4 @@ Route::post('/auth/login', [AuthController::class, 'login'])->name('auth.login')
 // Contoh route dashboard setelah login berhasil
 Route::get('/dashboard', function () {
     return 'Selamat datang di dashboard!';
-})->name('dashboard');
+})->name('dashboard'); // untuk memberikan nama yang bakal dipanggil di controller

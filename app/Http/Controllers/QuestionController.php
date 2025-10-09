@@ -36,7 +36,11 @@ class QuestionController extends Controller
         $data['email']      = $request->email;
         $data['pertanyaan'] = $request->pertanyaan;
 
-        return view('home-question-respon', $data);
+        // return view('home-question-respon', $data);
+        // return redirect()->route('home')->with('info', 'Selamat, Kamu Lulus!');
+
+        return redirect()->back()->with('info', 'Terimakasih ' . $data['nama'] . ' Pertanyaan ini : '
+            . $data['pertanyaan'] . ' akan segera direspon melalui email ' . $data['email']);
     }
 
     /**

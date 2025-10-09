@@ -7,6 +7,7 @@
     <title>My Laravel App</title>
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('assets/css/custom-style.css') }}">
     <!-- Custom CSS -->
     <style>
         body {
@@ -55,8 +56,9 @@
 <body>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <img src="assets/images/logo.jpg" alt="Logo" id="logo">
         <div class="container">
-            <a class="navbar-brand" href="#">My App</a>
+            <a class="navbar-brand font-custom" href="#">My App</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -67,7 +69,7 @@
                         <a class="nav-link active" aria-current="page" href="#">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Features</a>
+                        <a class="nav-link font-custom" href="#">Features</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Pricing</a>
@@ -115,6 +117,12 @@
                                         <li>{{ $error }}</li>
                                     @endforeach
                                 </ul>
+                            </div>
+                        @endif
+
+                        @if (session('info'))
+                            <div class="alert alert-info">
+                                {!! session('info') !!}
                             </div>
                         @endif
                         <form action="{{ route('question.store') }}" method="POST">
