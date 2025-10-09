@@ -32,7 +32,11 @@ class QuestionController extends Controller
             'pertanyaan' => 'required|max:300|min:8',
         ]);
 
-        return view('home');
+        $data['nama']       = $request->nama;
+        $data['email']      = $request->email;
+        $data['pertanyaan'] = $request->pertanyaan;
+
+        return view('home-question-respon', $data);
     }
 
     /**
