@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PelangganController;
 use App\Http\Controllers\QuestionController;
 
 Route::get('/', function () {
@@ -56,3 +57,6 @@ Route::post('/auth/login', [AuthController::class, 'login'])->name('auth.login')
 // })->name('dashboard'); // untuk memberikan nama yang bakal dipanggil di controller
 
 route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+Route::resource('pelanggan', PelangganController::class);
+// route('pelanggan.update', $dataPelanggan->pelanggan_id);
