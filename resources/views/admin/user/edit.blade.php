@@ -1,6 +1,7 @@
 @extends('layouts.admin.app')
-@section('title', 'Edit user')
+@section('title', 'Edit User')
 @section('content')
+
     <div class="py-4">
         <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
             <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
@@ -14,65 +15,91 @@
                         </svg>
                     </a>
                 </li>
-                <li class="breadcrumb-item"><a href="#">user</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Edit user</li>
+                <li class="breadcrumb-item"><a href="#">User</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Edit User</li>
             </ol>
         </nav>
+
         <div class="d-flex justify-content-between w-100 flex-wrap">
             <div class="mb-3 mb-lg-0">
-                <h1 class="h4">Edit user</h1>
-                <p class="mb-0">Form untuk mengedit data user baru.</p>
+                <h1 class="h4">Edit User</h1>
+                <p class="mb-0">Form untuk mengubah data pengguna.</p>
             </div>
             <div>
-                <a href="{{ route('user.index') }}" class="btn btn-primary"><i class="far fa-question-circle me-1"></i>
-                    Kembali</a>
+                <a href="{{ route('user.index') }}" class="btn btn-primary">
+                    <i class="far fa-question-circle me-1"></i> Kembali
+                </a>
             </div>
         </div>
+    </div>
 
-        <div class="row">
-            <div class="col-12 mb-4">
-                <div class="card border-0 shadow components-section">
-                    <div class="card-body">
-                        <form action={{ route('user.update', $dataUser->id) }} method="POST">
-                            @csrf
-                            @method('PUT')
-                            <div class="row mb-4">
-                                <div class="col-lg-3 col-sm-3">
+    <div class="row">
+        <div class="col-12 mb-4">
+            <div class="card border-0 shadow components-section">
+                <div class="card-body">
+                    <form action="{{ route('user.update', $dataUser->id) }}" method="POST">
+                        @csrf
+                        @method('PUT')
 
-                                    <div class="col-lg-3 col-sm-12">
+                        <div class="row mb-4">
+                            <div class="col-lg-4 col-sm-6">
+                                <!-- Name -->
+                                <div class="mb-3">
+                                    <label for="name" class="form-label">Nama</label>
+                                    <input type="text" id="name" name="name"
+                                        class="form-control @error('name') is-invalid @enderror"
+                                        value="{{ old('name', $dataUser->name) }}" required>
+                                    @error('name')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
 
-                                        <!--  Name -->
-                                        <div class="mb-3">
-                                            <label for="name" class="form-label">Nama</label>
-                                            <input type="text" id="name" name="name" class="form-control"
-                                                value="{{ $dataUser->name }}">
-                                        </div>
-                                        <!-- Email -->
-                                        <div class="mb-3">
-                                            <label for="email" class="form-label">Email</label>
-                                            <input type="text" id="email" name="email" class="form-control"
-                                                value="{{ $dataUser->email }}">
-                                        </div>
-                                        <!-- Password -->
-                                        <div class="mb-3">
-                                            <label for="password" class="form-label">Password</label>
-                                            <input type="text" id="password" name="password" class="form-control"
-                                                value="{{ $dataUser->password }}">
-                                        </div>
-                                    </div>
-
-
-                                    <!-- Buttons -->
-                                    <div class="">
-                                        <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
-                                        <a href="{{ route('user.index') }}" class="btn btn-outline-secondary ms-2">Batal</a>
-                                    </div>
+                                <!-- Email -->
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Email</label>
+                                    <input type="text" id="email" name="email"
+                                        class="form-control @error('email') is-invalid @enderror"
+                                        value="{{ old('email', $dataUser->email) }}" required>
+                                    @error('email')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
-                        </form>
-                    </div>
 
-                </div>
-            </div>
+                            <div class="col-lg-4 col-sm-6">
+                                <!-- Password -->
+                                <div class="mb-3">
+                                    <label for="password" class="form-label">Password (Opsional)</label>
+                                    <input type="password" id="password" name="password"
+                                        class="form-control @error('password') is-invalid @enderror"
+                                        placeholder="Isi jika ingin mengganti password">
+                                    @error('password')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <!-- Konfirmasi Password -->
+                                <div class="mb-3">
+                                    <label for="password_confirmation" class="form-label">Konfirmasi Password</label>
+                                    <input type="password" id="password_confirmation" name="password_confirmation"
+                                        class="form-control @error('password_confirmation') is-invalid @enderror"
+                                        placeholder="Ulangi password baru">
+                                    @error('password_confirmation')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <!-- Buttons -->
+                                <div class="">
+                                    <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                                    <a href="{{ route('user.index') }}" class="btn btn-outline-secondary ms-2">Batal</a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div> <!-- end card-body -->
+            </div> <!-- end card -->
         </div>
-    @endsection
+    </div>
+
+@endsection
