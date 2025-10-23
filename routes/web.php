@@ -58,5 +58,9 @@ Route::post('/auth/login', [AuthController::class, 'login'])->name('auth.login')
 
 route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
+
+Route::get('dashboard', [DashBoardController::class, 'index'])->name('dashboard');
+
 Route::resource('pelanggan', PelangganController::class);
-// route('pelanggan.update', $dataPelanggan->pelanggan_id);
+Route::get('/pelanggan/{id}/edit', [PelangganController::class, 'edit'])->name('pelanggan.edit');
+Route::put('/pelanggan/{id}', [PelangganController::class, 'update'])->name('pelanggan.update');

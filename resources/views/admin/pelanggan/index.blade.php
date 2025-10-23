@@ -1,10 +1,15 @@
+{{-- @extends('admin.template')
+@section('title', 'List Pelanggan')
+@section('content') --}}
+@include('admin.layouts.admin.css')
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <!-- Primary Meta Tags -->
-    <title>Volt - Free Bootstrap 5 Dashboard</title>
+    <title>Ini Web Abel</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="title" content="Volt - Free Bootstrap 5 Dashboard">
     <meta name="author" content="Themesberg">
@@ -20,7 +25,7 @@
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="theme-color" content="#ffffff">
 
-    <!-- Volt CSS -->
+    //css
     <link type="text/css" href="{{ asset('assets-admin/css/volt.css') }}" rel="stylesheet">
 
 </head>
@@ -39,7 +44,7 @@
             </button>
         </div>
     </nav>
-
+    //sidebar
     <nav id="sidebarMenu" class="sidebar d-lg-block bg-gray-800 text-white collapse" data-simplebar>
         <div class="sidebar-inner px-4 pt-3">
             <div
@@ -97,9 +102,8 @@
                         <span class="sidebar-text">Dashboard</span>
                     </a>
                 </li>
-                <!-- Tambahkan blok kode ini -->
                 <li class="nav-item  active ">
-                    <a href="" class="nav-link">
+                    <a href="{{ route('pelanggan.index') }}" class="nav-link">
                         <span class="sidebar-icon">
                             <svg class="icon icon-xs me-2" data-slot="icon" fill="none" stroke-width="1.5"
                                 stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
@@ -314,6 +318,7 @@
             </div>
         </nav>
 
+        //content
         <div class="py-4">
             <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
                 <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
@@ -327,7 +332,7 @@
                             </svg>
                         </a>
                     </li>
-                    <li class="breadcrumb-item"><a href="#">Pelanggan</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('pelanggan.index') }}">Pelanggan</a></li>
                 </ol>
             </nav>
             <div class="d-flex justify-content-between w-100 flex-wrap">
@@ -337,7 +342,8 @@
                 </div>
                 <div>
                     <a href="" class="btn btn-success text-white"><i class="far fa-question-circle me-1"></i>
-                        Tambah Pelanggan</a>
+                        Tambah
+                        Pelanggan</a>
                 </div>
             </div>
         </div>
@@ -350,8 +356,8 @@
                             <table id="table-pelanggan" class="table table-centered table-nowrap mb-0 rounded">
                                 <thead class="thead-light">
                                     <tr>
-                                        <th class="border-0">First Name</th>
-                                        <th class="border-0">Last Name</th>
+                                        <th class="border-0">FirstName</th>
+                                        <th class="border-0">LastName</th>
                                         <th class="border-0">Birthday</th>
                                         <th class="border-0">Gender</th>
                                         <th class="border-0">Email</th>
@@ -360,7 +366,6 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-
                                     @foreach ($dataPelanggan as $item)
                                         <tr>
                                             <td>{{ $item->first_name }}</td>
@@ -380,7 +385,6 @@
                                                     </svg>
                                                     Edit
                                                 </a>
-
                                                 <form action="{{ route('pelanggan.destroy', $item->pelanggan_id) }}"
                                                     method="POST" style="display:inline">
                                                     @csrf
@@ -401,8 +405,6 @@
 
                                         </tr>
                                     @endforeach
-
-
                                 </tbody>
                             </table>
                         </div>
@@ -411,6 +413,8 @@
             </div>
         </div>
 
+
+        //ini footer
         <footer class="bg-white rounded shadow p-5 mb-4 mt-4">
             <div class="row">
                 <div class="col-12 col-md-4 col-xl-6 mb-4 mb-md-0">
@@ -439,7 +443,7 @@
         </footer>
     </main>
 
-    <!-- Core -->
+    //ini js
     <script src="{{ asset('assets-admin/vendor/@popperjs/core/dist/umd/popper.min.js') }}"></script>
     <script src="{{ asset('assets-admin/vendor/bootstrap/dist/js/bootstrap.min.js') }}"></script>
 
