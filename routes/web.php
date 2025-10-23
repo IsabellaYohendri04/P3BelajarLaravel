@@ -5,6 +5,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PelangganController;
 use App\Http\Controllers\QuestionController;
+use App\Http\Controllers\UserController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -64,3 +65,7 @@ Route::get('dashboard', [DashBoardController::class, 'index'])->name('dashboard'
 Route::resource('pelanggan', PelangganController::class);
 Route::get('/pelanggan/{id}/edit', [PelangganController::class, 'edit'])->name('pelanggan.edit');
 Route::put('/pelanggan/{id}', [PelangganController::class, 'update'])->name('pelanggan.update');
+
+Route::resource('user', UserController::class);
+Route::get('/user/{id}/edit', [UserController::class, 'edit'])->name('user.edit');
+Route::put('/user/{id}', [UserController::class, 'update'])->name('user.update');
