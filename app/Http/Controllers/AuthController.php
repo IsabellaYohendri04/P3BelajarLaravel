@@ -8,20 +8,13 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    /**
-     * Tampilkan halaman login
-     */
     public function index()
     {
         return view('login');
     }
 
-    /**
-     * Proses login user
-     */
     public function login(Request $request)
     {
-        // Validasi input
         $request->validate([
             'email' => 'required|email',
             'password' => 'required|min:3',
@@ -31,32 +24,31 @@ class AuthController extends Controller
             'password.required' => 'Password wajib diisi.',
         ]);
 
-        // Cek apakah email terdaftar
         $user = User::where('email', $request->email)->first();
 
-        // Jika user ditemukan dan password sesuai
-        if ($user && Hash::check($request->password, $user->password)) {
-
-            // Simpan session login
-            session([
-                'user_id'    => $user->id,
-                'user_name'  => $user->name,
-                'user_email' => $user->email,
-            ]);
-
-            // Arahkan ke halaman dashboard
-            return redirect()->route('dashboard')->with('success', 'Login berhasil!');
+        // Jika email tidak ditemukan
+        if (! $user) {
+            return back()->withErrors(['login' => 'Email tidak ditemukan.'])->withInput();
         }
 
-        // Jika gagal login
-        return redirect()->route('auth.index')->withErrors([
-            'login' => 'Email atau password salah.',
-        ])->withInput();
+        // Jika password salah
+        if (! Hash::check($request->password, $user->password)) {
+            return back()->withErrors(['login' => 'Password yang Anda masukkan salah.'])->withInput();
+        }
+
+        // Jika berhasil login
+        session([
+            'user_id'    => $user->id,
+            'user_name'  => $user->name,
+            'user_email' => $user->email,
+        ]);
+
+        return view('admin.dashboard', [
+            'title' => 'Dashboard',
+            'user'  => $user,
+        ])->with('success', 'Login berhasil!');
     }
 
-    /**
-     * Logout user
-     */
     public function logout()
     {
         session()->flush();
