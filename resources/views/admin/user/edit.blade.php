@@ -37,13 +37,31 @@
         <div class="col-12 mb-4">
             <div class="card border-0 shadow components-section">
                 <div class="card-body">
+
+                    @if (session('success'))
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            {{ session('success') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    @endif
+
+                    @if ($errors->any())
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <ul class="mb-0">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    @endif
+
                     <form action="{{ route('user.update', $dataUser->id) }}" method="POST">
                         @csrf
                         @method('PUT')
 
                         <div class="row mb-4">
                             <div class="col-lg-4 col-sm-6">
-                                <!-- Name -->
                                 <div class="mb-3">
                                     <label for="name" class="form-label">Nama</label>
                                     <input type="text" id="name" name="name"
@@ -54,7 +72,6 @@
                                     @enderror
                                 </div>
 
-                                <!-- Email -->
                                 <div class="mb-3">
                                     <label for="email" class="form-label">Email</label>
                                     <input type="text" id="email" name="email"
@@ -67,7 +84,6 @@
                             </div>
 
                             <div class="col-lg-4 col-sm-6">
-                                <!-- Password -->
                                 <div class="mb-3">
                                     <label for="password" class="form-label">Password (Opsional)</label>
                                     <input type="password" id="password" name="password"
@@ -78,7 +94,6 @@
                                     @enderror
                                 </div>
 
-                                <!-- Konfirmasi Password -->
                                 <div class="mb-3">
                                     <label for="password_confirmation" class="form-label">Konfirmasi Password</label>
                                     <input type="password" id="password_confirmation" name="password_confirmation"
@@ -89,7 +104,6 @@
                                     @enderror
                                 </div>
 
-                                <!-- Buttons -->
                                 <div class="">
                                     <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
                                     <a href="{{ route('user.index') }}" class="btn btn-outline-secondary ms-2">Batal</a>
@@ -97,8 +111,8 @@
                             </div>
                         </div>
                     </form>
-                </div> <!-- end card-body -->
-            </div> <!-- end card -->
+                </div>
+            </div>
         </div>
     </div>
 

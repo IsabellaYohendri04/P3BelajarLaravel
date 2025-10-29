@@ -24,6 +24,12 @@
             <div class="mb-3 mb-lg-0">
                 <h1 class="h4">Data user</h1>
                 <p class="mb-0">List data seluruh user</p>
+                 @if (session('success'))
+            <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+                <strong>Berhasil!</strong> {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
             </div>
             <div>
                 <a href="{{ route('user.create') }}" class="btn btn-success text-white"><i
