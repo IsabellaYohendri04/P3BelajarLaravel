@@ -91,7 +91,7 @@
 
                                 <!-- Buttons -->
                                 <div class="">
-                                    <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                                    <button type="submit" class="btn btn-primary">Simpan Perubahan!</button>
                                     <a href="{{ route('user.index') }}" class="btn btn-outline-secondary ms-2">Batal</a>
                                 </div>
                             </div>
