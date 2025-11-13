@@ -1,5 +1,10 @@
 <?php
+
 namespace App\Http\Controllers;
+
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -8,34 +13,45 @@ class AuthController extends Controller
         return view('login');
     }
 
-    // Memproses data form login
     public function login(Request $request)
     {
-        // Validasi input
         $request->validate([
-            'username' => 'required',
-            'password' => [
-                'required',
-                'min:3',
-                function ($attribute, $value, $fail) {
-                    if (! preg_match('/[A-Z]/', $value)) {
-                        $fail('Password harus mengandung minimal 1 huruf kapital.');
-                    }
-                },
-            ],
+            'email' => 'required|email',
+            'password' => 'required|min:3',
         ], [
-            'username.required' => 'Username wajib diisi.',
+            'email.required' => 'Email wajib diisi.',
+            'email.email'    => 'Format email tidak valid.',
             'password.required' => 'Password wajib diisi.',
-            'password.min'      => 'Password minimal 3 karakter.',
         ]);
 
-        // Contoh cek login (username: admin, password: Admin123)
-        if ($request->username === 'admin' && $request->password === 'Admin123') {
-            // Jika sukses, arahkan ke halaman dashboard (bisa sesuaikan)
-            return redirect()->route('dashboard')->with('success', 'Login berhasil!');
+        $user = User::where('email', $request->email)->first();
+
+        // Jika email tidak ditemukan
+        if (! $user) {
+            return back()->withErrors(['login' => 'Email tidak ditemukan.'])->withInput();
         }
 
-        // Jika gagal, kembali ke login dengan pesan error
-        return redirect()->route('auth.index')->withErrors(['login' => 'Username atau password salah'])->withInput();
+        // Jika password salah
+        if (! Hash::check($request->password, $user->password)) {
+            return back()->withErrors(['login' => 'Password yang Anda masukkan salah.'])->withInput();
+        }
+
+        // Jika berhasil login
+        session([
+            'user_id'    => $user->id,
+            'user_name'  => $user->name,
+            'user_email' => $user->email,
+        ]);
+
+        return view('admin.dashboard', [
+            'title' => 'Dashboard',
+            'user'  => $user,
+        ])->with('success', 'Login berhasil!');
+    }
+
+    public function logout()
+    {
+        session()->flush();
+        return redirect()->route('auth.index')->with('success', 'Logout berhasil!');
     }
 }
