@@ -40,7 +40,8 @@ class AuthController extends Controller
         session([
             'user_id'    => $user->id,
             'user_name'  => $user->name,
-            'user_email' => $user->email,
+            'user_e
+            mail' => $user->email,
         ]);
 
         return view('admin.dashboard', [

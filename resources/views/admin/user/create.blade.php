@@ -37,72 +37,98 @@
         <div class="col-12 mb-4">
             <div class="card border-0 shadow components-section">
                 <div class="card-body">
-                    <form action="{{ route('user.store') }}" method="POST">
+
+                    <form action="{{ route('user.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
+
                         <div class="row mb-4">
+
                             <div class="col-lg-4 col-sm-6">
-                                <!-- Name -->
+
                                 <div class="mb-3">
                                     <label for="name" class="form-label">Nama</label>
                                     <input type="text" id="name" name="name"
-                                        class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}"
-                                        >
+                                        class="form-control @error('name') is-invalid @enderror"
+                                        value="{{ old('name') }}">
                                     @error('name')
-                                        <div class="invalid-feedback">
-                                            {{ $message }}
-                                        </div>
+                                        <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
 
-                                <!-- Email -->
                                 <div class="mb-3">
                                     <label for="email" class="form-label">Email</label>
                                     <input type="text" id="email" name="email"
                                         class="form-control @error('email') is-invalid @enderror"
-                                        value="{{ old('email') }}" >
+                                        value="{{ old('email') }}">
                                     @error('email')
-                                        <div class="invalid-feedback">
-                                            {{ $message }}
-                                        </div>
+                                        <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
+
+                                {{-- Foto Profil --}}
+                                <div class="mb-3">
+                                    <label for="profile_picture" class="form-label">Foto Profil</label>
+
+                                    <div class="mb-2">
+                                        <img id="previewImage" src="https://via.placeholder.com/100" width="100"
+                                            height="100" class="rounded-circle" style="object-fit: cover;">
+                                    </div>
+
+                                    <input type="file" id="profile_picture" name="profile_picture"
+                                        class="form-control @error('profile_picture') is-invalid @enderror" accept="image/*"
+                                        onchange="previewFile()">
+
+                                    @error('profile_picture')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
                             </div>
 
                             <div class="col-lg-4 col-sm-6">
-                                <!-- Password -->
+
                                 <div class="mb-3">
                                     <label for="password" class="form-label">Password</label>
                                     <input type="password" id="password" name="password"
                                         class="form-control @error('password') is-invalid @enderror">
                                     @error('password')
-                                        <div class="invalid-feedback">
-                                            {{ $message }}
-                                        </div>
+                                        <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
 
-                                <!-- Konfirmasi Password -->
                                 <div class="mb-3">
                                     <label for="password_confirmation" class="form-label">Konfirmasi Password</label>
                                     <input type="password" id="password_confirmation" name="password_confirmation"
                                         class="form-control @error('password_confirmation') is-invalid @enderror">
                                     @error('password_confirmation')
-                                        <div class="invalid-feedback">
-                                            {{ $message }}
-                                        </div>
+                                        <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
 
-                                <!-- Buttons -->
-                                <div class="">
+                                <div>
                                     <button type="submit" class="btn btn-primary">Simpan</button>
                                     <a href="{{ route('user.index') }}" class="btn btn-outline-secondary ms-2">Batal</a>
                                 </div>
+
                             </div>
+
                         </div>
                     </form>
-                </div> <!-- end card-body -->
-            </div> <!-- end card -->
+
+                </div>
+            </div>
         </div>
     </div>
+
 @endsection
+
+<script>
+    function previewFile() {
+        const file = document.getElementById("profile_picture").files[0];
+        const preview = document.getElementById("previewImage");
+
+        if (file) {
+            preview.src = URL.createObjectURL(file);
+        }
+    }
+</script>
