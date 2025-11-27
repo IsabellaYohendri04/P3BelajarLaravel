@@ -62,7 +62,7 @@
                                         {{-- Kolom Foto Profile --}}
                                         <td>
                                             @if ($item->profile_picture)
-                                                <img src="{{ asset('admin/user/img/' . $item->profile_picture) }}"
+                                                <img src="{{ asset('/admin/user/img/' . $item->profile_picture) }}"
                                                     alt="Profile" width="50" height="50" class="rounded-circle"
                                                     style="object-fit: cover;">
                                             @else
