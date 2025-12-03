@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Hash; // 1. Import Hash
+use Illuminate\Validation\Rule;
+use Spatie\Permission\Models\Role; // 1. Import Role Spatie
+use Illuminate\Support\Facades\Storage; // 2. Import Storage untuk hapus foto
 
 class UserController extends Controller
 {
@@ -15,7 +17,6 @@ class UserController extends Controller
     public function index()
     {
         $data['dataUser'] = User::all();
-
         return view('admin.user.index', $data);
     }
 
@@ -24,7 +25,9 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('admin.user.create');
+        // Ambil data Role untuk dropdown
+        $data['roles'] = Role::all();
+        return view('admin.user.create', $data);
     }
 
     /**
@@ -32,21 +35,40 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-
-        // tambahkan validasi
-        $request->validate([
-            'name' => 'required|string|max:100',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:8|confirmed',
+        // Validasi input
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:users',
+            'password' => 'required|string|min:7',
+            'role' => 'required', // Wajib pilih role
+            'avatar' => 'nullable|image|mimes:jpeg,png,jpg|max:2048', // Validasi foto
         ]);
 
-        $data['name'] = $request->name;
-        $data['email'] = $request->email;
-        $data['password'] = Hash::make($request->password);
+        // 1. Hash Password
+        $validatedData['password'] = Hash::make($validatedData['password']);
 
-        User::create($data);
+        // 2. Upload Foto (jika ada)
+        if ($request->hasFile('avatar')) {
+            // Simpan ke folder 'public/avatars'
+            $validatedData['avatar'] = $request->file('avatar')->store('avatars', 'public');
+        }
 
+        // 3. Simpan User
+        $user = User::create($validatedData);
+
+        // 4. Pasang Role ke User
+        $user->assignRole($request->role);
+
+        // Redirect ke user.index (sesuai route baru)
         return redirect()->route('user.index')->with('success', 'Penambahan Data Berhasil!');
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
+    {
+        //
     }
 
     /**
@@ -54,9 +76,10 @@ class UserController extends Controller
      */
     public function edit(string $id)
     {
-        $dataUser = User::findOrFail($id);
-
-        return view('admin.user.edit', compact('dataUser'));
+        $data['dataUser'] = User::findOrFail($id);
+        // kirim data role juga ke form edit
+        $data['roles'] = Role::all();
+        return view('admin.user.edit', $data);
     }
 
     /**
@@ -66,51 +89,55 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
 
-        // Tambahkan validasi
-        $request->validate([
-            'name' => 'required|string|max:100',
-            'email' => 'required|email|unique:users,email,' . $id,
-            'password' => 'required|min:8|confirmed',
+        // Validasi input
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => ['required', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
+            'password' => 'nullable|string|min:7', // nullable: Update hanya jika diisi
+            'role' => 'required', // Role wajib dipilih saat edit
+            'avatar' => 'nullable|image|mimes:jpeg,png,jpg|max:2048', // Validasi foto
         ]);
 
-        $data['name'] = $request->name;
-        $data['email'] = $request->email;
-        $data['password'] = Hash::make($request->password);
+        // 1. Cek Password (Update hanya jika diisi)
+        if ($request->filled('password')) {
+            $validatedData['password'] = Hash::make($validatedData['password']);
+        } else {
+            unset($validatedData['password']); // Jangan update password jika kosong
+        }
 
-
-        // ---- Tambahan dari ProfileController (Upload Foto Profil) ----
-        if ($request->hasFile('profile_picture')) {
-
-            // Validasi file
-            $request->validate([
-                'profile_picture' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
-            ]);
-
-            // Hapus foto lama
-            if ($user->profile_picture) {
-                Storage::disk('public')->delete($user->profile_picture);
+        // 2. cek Upload Foto Baru
+        if ($request->hasFile('avatar')) {
+            // Hapus foto lama jika ada
+            if ($user->avatar && Storage::disk('public')->exists($user->avatar)) {
+                Storage::disk('public')->delete($user->avatar);
             }
 
-            // Upload foto baru
-            $path = $request->file('profile_picture')->store('profile_pictures', 'public');
-            $data['profile_picture'] = $path;
+            // Simpan foto baru
+            $validatedData['avatar'] = $request->file('avatar')->store('avatars', 'public');
         }
-        $user->update($data);
+
+        // 3. Update Data User
+        $user->update($validatedData);
+
+        // 4. Update Role (Sync mengganti role lama dengan yang baru)
+        $user->syncRoles($request->role);
 
         return redirect()->route('user.index')->with('success', 'Perubahan Data Berhasil!');
     }
 
+    /**
+     * Remove the specified resource from storage.
+     */
     public function destroy(string $id)
     {
         $user = User::findOrFail($id);
 
-        // hapus foto jika ada
-        if ($user->profile_picture) {
-            Storage::disk('public')->delete($user->profile_picture);
+        // Hapus foto profilnya juga agar hemat penyimpanan
+        if ($user->avatar && Storage::disk('public')->exists($user->avatar)) {
+            Storage::disk('public')->delete($user->avatar);
         }
 
         $user->delete();
-
-        return redirect()->route('user.index')->with('success', 'Penghapusan Data Berhasil!');
+        return redirect()->route('user.index')->with('success', 'Data berhasil dihapus');
     }
 }

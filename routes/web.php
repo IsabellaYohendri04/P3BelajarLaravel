@@ -1,17 +1,61 @@
 <?php
 
+// use Illuminate\Support\Facades\Route;
+// use App\Http\Controllers\AuthController;
+// use App\Http\Controllers\DashboardController;
+// use App\Http\Controllers\HomeController;
+// use App\Http\Controllers\PelangganController;
+// use App\Http\Controllers\ProfileController;
+// use App\Http\Controllers\QuestionController;
+// use App\Http\Controllers\UserController;
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\PelangganController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\PelangganController;
+use App\Http\Controllers\QuestionController;
+use App\Http\Controllers\HomeController;
 
-Route::get('/', function () {
-    return view('welcome');
+// Halaman guest
+Route::middleware('guest')->group(function () {
+    // Halaman Form Login
+    Route::get('/auth', [AuthController::class, 'index'])->name('login');
+
+    // Proses Submit Login
+    Route::post('/auth/login', [AuthController::class, 'login'])->name('login.process');
+
+    // Halaman Depan
+    Route::get('/', function () {
+        return view('welcome');
+    });
 });
+
+// Halaman wajib login
+Route::middleware('auth')->group(function () {
+
+    // Logout (Bisa diakses semua user yang login)
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+    // --- DASHBOARD UNTUK USER BIASA ---
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    // Fitur User Biasa (Contoh: Kirim Pertanyaan)
+    Route::post('/question/store', [QuestionController::class, 'store'])->name('question.store');
+    Route::get('/home', [HomeController::class, 'index']);
+
+    // Khusus admin
+    Route::middleware(['role:admin'])->prefix('admin')->group(function () {
+        Route::resource('user', UserController::class);
+        Route::resource('pelanggan', PelangganController::class);
+    });
+});
+
+
+
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 // Route::get('/pcr', function () {
 //     return 'Selamat datang di Website Kampus PCR !';
@@ -52,24 +96,24 @@ Route::get('/', function () {
 
 
 
-Route::get('/auth', [AuthController::class, 'index'])->name('auth.index');
-Route::post('/auth/login', [AuthController::class, 'login'])->name('auth.login');
+// Route::get('/auth', [AuthController::class, 'index'])->name('auth.index');
+// Route::post('/auth/login', [AuthController::class, 'login'])->name('auth.login');
 
 // // Contoh route dashboard setelah login berhasil
 // Route::get('/dashboard', function () {
 //     return 'Selamat datang di dashboard!';
 // })->name('dashboard'); // untuk memberikan nama yang bakal dipanggil di controller
 
-route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+// route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
 
-Route::get('dashboard', [DashBoardController::class, 'index'])->name('dashboard');
+// Route::get('dashboard', [DashBoardController::class, 'index'])->name('dashboard');
 
-Route::resource('pelanggan', PelangganController::class);
-Route::get('/pelanggan/{id}/edit', [PelangganController::class, 'edit'])->name('pelanggan.edit');
-Route::put('/pelanggan/{id}', [PelangganController::class, 'update'])->name('pelanggan.update');
+// Route::resource('pelanggan', PelangganController::class);
+// Route::get('/pelanggan/{id}/edit', [PelangganController::class, 'edit'])->name('pelanggan.edit');
+// Route::put('/pelanggan/{id}', [PelangganController::class, 'update'])->name('pelanggan.update');
 
-Route::resource('user', UserController::class);
-Route::get('/user/{id}/edit', [UserController::class, 'edit'])->name('user.edit');
-Route::put('/user/{id}', [UserController::class, 'update'])->name('user.update');
+// Route::resource('user', UserController::class);
+// Route::get('/user/{id}/edit', [UserController::class, 'edit'])->name('user.edit');
+// Route::put('/user/{id}', [UserController::class, 'update'])->name('user.update');
 

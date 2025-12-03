@@ -70,7 +70,7 @@
                                                     class="rounded-circle">
                                             @endif
                                         </td>
-                                        >
+                                        
 
                                         <td>{{ $item->name }}</td>
                                         <td>{{ $item->email }}</td>
