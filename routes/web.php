@@ -16,6 +16,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\PelangganController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\MultipleuploadsController;
 
 // Halaman guest
 Route::middleware('guest')->group(function () {
@@ -51,6 +52,12 @@ Route::middleware('auth')->group(function () {
     });
 });
 
+
+Route::get('/multipleuploads', [MultipleuploadsController::class, 'index'])
+     ->name('uploads');
+
+Route::post('/save', [MultipleuploadsController::class, 'store'])
+     ->name('uploads.store');
 
 
 // Route::get('/', function () {

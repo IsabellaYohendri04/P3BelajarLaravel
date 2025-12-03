@@ -58,23 +58,24 @@
 
                             <tbody>
                                 @foreach ($dataUser as $item)
-                                    <tr>
-                                        {{-- Kolom Foto Profile --}}
-                                        <td>
-                                            @if ($item->profile_picture)
-                                                <img src="{{ asset('/admin/user/img/' . $item->profile_picture) }}"
-                                                    alt="Profile" width="50" height="50" class="rounded-circle"
-                                                    style="object-fit: cover;">
-                                            @else
-                                                <img src="https://via.placeholder.com/50" alt="No Image"
-                                                    class="rounded-circle">
-                                            @endif
-                                        </td>
+<tr>
+    <td>
+        @if ($item->avatar)
+            <img src="{{ asset('storage/' . $item->avatar) }}"
+                 alt="Profile" width="50" height="50"
+                 class="rounded-circle" style="object-fit: cover;">
+        @else
+            <img src="https://via.placeholder.com/50"
+                 alt="No Image" class="rounded-circle">
+        @endif
+    </td>
+
                                         
 
                                         <td>{{ $item->name }}</td>
                                         <td>{{ $item->email }}</td>
                                         <td>{{ $item->password }}</td>
+                                        
 
                                         <td>
                                             <a href="{{ route('user.edit', $item->id) }}" class="btn btn-info btn-sm">
